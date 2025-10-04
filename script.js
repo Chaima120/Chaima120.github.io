@@ -1,35 +1,37 @@
-// Attendre que la page soit chargée
-window.onload = function() {
+const input = document.getElementById("terminal-input");
+const output = document.getElementById("output");
+const buttons = document.querySelectorAll(".cmd-btn");
 
-  const input = document.getElementById("terminal-input");
-  const output = document.getElementById("output");
-
-  // Commandes disponibles dans le mini terminal
-  const commands = {
-    help: "Commandes disponibles : help, about, skills, projects, contact, cv",
-    about: "Je suis Chaima Bejaoui, étudiante en Informatique et Cybersécurité, à la recherche d'une alternance pour Septembre 2026.",
-    skills: "Compétences : HTML, CSS, JavaScript, Python, Git/GitHub, travail en équipe, autonomie",
-    projects: "Mes projets sont visibles dans la section Projets de ce portfolio.",
-    contact: "Vous pouvez me contacter via Email, LinkedIn ou GitHub dans la section Contact.",
-    cv: "Cliquez sur le bouton CV dans le menu pour voir ou télécharger mon CV."
-  };
-
-  // Écouter la touche Entrée
-  input.addEventListener("keydown", function(e) {
-    if (e.key === "Enter") {
-      const command = input.value.toLowerCase();
-      input.value = ""; // vider le champ
-
-      // Vérifier si la commande existe
-      if (commands[command]) {
-        output.innerHTML += `<p style="color:#00ff99;">> ${command}</p><p>${commands[command]}</p>`;
-      } else {
-        output.innerHTML += `<p style="color:#00ff99;">> ${command}</p><p>Commande non reconnue. Tapez 'help' pour voir les commandes.</p>`;
-      }
-
-      // Faire défiler automatiquement vers le bas
-      output.scrollTop = output.scrollHeight;
-    }
-  });
-
+const commands = {
+  help: "Commandes disponibles : whoami, ls, cd projets, cat about.txt",
+  whoami: "chaima",
+  ls: "projets/ document skills.txt about.txt",
+  "cd projets": "Accès au dossier projets...",
+  "cat about.txt": "Chaima est une étudiante passionnée par la cybersécurité et le développement.",
 };
+
+function executeCommand(cmd) {
+  const userLine = document.createElement("div");
+  userLine.textContent = `chaima@ciel-terminal:$ ${cmd}`;
+  output.appendChild(userLine);
+
+  const responseLine = document.createElement("div");
+  responseLine.textContent = commands[cmd] || `bash: ${cmd}: commande introuvable`;
+  output.appendChild(responseLine);
+
+  output.scrollTop = output.scrollHeight;
+}
+
+input.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    const cmd = input.value.trim();
+    executeCommand(cmd);
+    input.value = "";
+  }
+});
+
+buttons.forEach(button => {
+  button.addEventListener("click", () => {
+    executeCommand(button.textContent);
+  });
+});

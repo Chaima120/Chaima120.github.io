@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mon Portfolio</title>
+  <title>Chaima Bejaoui - Portfolio</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <!-- Menu principal -->
   <nav class="menu">
-    <a href="#accueil">Accueil</a>
+    <a href="#accueil" class="active">Accueil</a>
     <a href="#apropos">À propos</a>
     <a href="#competences">Compétences</a>
     <a href="#projets">Projets</a>
@@ -18,69 +18,86 @@
     <a href="#contact">Contact</a>
   </nav>
 
-  <!-- Sections existantes ... -->
-  <section id="accueil">
-    <h1>Bonjour, je suis Chaima Bejaoui </h1>
-    <h2>Étudiant en Informatique et Cybersecurité </h2>
-    <p>À la recherche d'une alternance pour Septembre 2026 afin de mettre mes compétences en pratique.</p>
-  </section>
+  <!-- Section Accueil avec terminal à droite -->
+  <section id="accueil" class="accueil-container">
+    <div class="presentation">
+      <h1>Chaima Bejaoui</h1>
+      <h2>Étudiante en Informatique et Cybersécurité</h2>
+      <p>À la recherche d'une alternance pour Septembre 2026 afin de mettre mes compétences en pratique.</p>
+      <div class="buttons">
+        <a href="#projets" class="neon-button">Voir mes projets</a>
+        <a href="#contact" class="neon-button">Me contacter</a>
+      </div>
+    </div>
 
+    <div class="terminal-body" id="output">
+  <div>chaima@ciel-terminal:$ Terminal interactif activé !</div>
+  <div>chaima@ciel-terminal:$ Commandes disponibles :</div>
+  <div class="command-list">
+    <button class="cmd-btn">help</button>
+    <button class="cmd-btn">whoami</button>
+    <button class="cmd-btn">ls</button>
+    <button class="cmd-btn">cd projets</button>
+    <button class="cmd-btn">cat about.txt</button>
+  </div>
+</div>
+<div class="input-line">
+  <span>chaima@ciel-terminal:$</span>
+  <input type="text" id="terminal-input" placeholder="Tapez une commande..." autofocus>
+</div>
+
+
+  <!-- Section À propos -->
   <section id="apropos">
     <h2>À propos</h2>
-    <p>Ton parcours, formations et présentation ici.</p>
+    <p>Je suis une étudiante passionnée par la cybersécurité, curieuse et motivée à relever des défis techniques.</p>
   </section>
 
+  <!-- Section Compétences -->
   <section id="competences">
     <h2>Compétences</h2>
     <ul>
       <li>HTML, CSS, JavaScript</li>
       <li>Python, Git/GitHub</li>
+      <li>Cybersécurité, Analyse de vulnérabilités</li>
       <li>Travail en équipe, autonomie</li>
     </ul>
   </section>
 
+  <!-- Section Projets -->
   <section id="projets">
     <h2>Projets</h2>
     <div class="project">
       <img src="images/projet1.png" alt="Projet 1" class="project-img">
-      <h3>Projet 1</h3>
-      <p>Description du projet et technologies utilisées.</p>
-      <a href="https://github.com/tonutilisateur/projet1" target="_blank">Voir le code</a>
+      <h3>Détection d'intrusion réseau</h3>
+      <p>Outil développé en Python pour analyser le trafic réseau et détecter les comportements suspects.</p>
+      <a href="https://github.com/chaima/projet1" target="_blank">Voir le code</a>
     </div>
     <div class="project">
       <img src="images/projet2.png" alt="Projet 2" class="project-img">
-      <h3>Projet 2</h3>
-      <p>Description du projet et technologies utilisées.</p>
-      <a href="https://github.com/tonutilisateur/projet2" target="_blank">Voir le code</a>
+      <h3>Portfolio Web</h3>
+      <p>Site personnel responsive codé en HTML/CSS/JS avec un terminal interactif intégré.</p>
+      <a href="https://github.com/chaima/projet2" target="_blank">Voir le code</a>
     </div>
   </section>
 
+  <!-- Section Contact -->
   <section id="contact">
     <h2>Contact</h2>
-    <p>Email : <a href="mailto:tonemail@example.com">tonemail@example.com</a></p>
+    <p>Email : <a href="mailto:chaima@example.com">chaima@example.com</a></p>
     <div class="contact-icons">
-      <a href="https://www.linkedin.com/in/tonprofil" target="_blank">
+      <a href="https://www.linkedin.com/in/chaima" target="_blank">
         <img src="images/linkedin.png" alt="LinkedIn" class="icon">
       </a>
-      <a href="https://github.com/tonutilisateur" target="_blank">
+      <a href="https://github.com/chaima" target="_blank">
         <img src="images/github.png" alt="GitHub" class="icon">
       </a>
-      <a href="mailto:tonemail@example.com">
+      <a href="mailto:chaima@example.com">
         <img src="images/email.png" alt="Email" class="icon">
       </a>
     </div>
   </section>
 
-  <!-- Section Mini Terminal -->
-  <section id="terminal">
-    <h2>Mini Terminal</h2>
-    <div id="terminal-window">
-      <div id="output"></div>
-      <input type="text" id="terminal-input" placeholder="Tapez une commande..." autofocus>
-    </div>
-  </section>
-
-  <!-- Lien unique vers le script JS -->
   <script src="script.js"></script>
 </body>
 </html>
