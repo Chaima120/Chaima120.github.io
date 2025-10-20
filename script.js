@@ -10,8 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Définition des Commandes Complexes ---
     const commands = {
         'help': (history) => {
-            history.push(`Commandes disponibles : <span style='color:${NEON_CYAN}'>whoami</span>, <span style='color:${NEON_CYAN}'>ls</span>, <span style='color:${NEON_CYAN}'>cat [fichier]</span>, <span style='color:${NEON_CYAN}'>ping [hôte]</span>, <span style='color:${NEON_CYAN}'>whois chaima</span>, <span style='color:${NEON_CYAN}'>clear</span>.`);
-            history.push(`Pour naviguer, utilisez <span style='color:${NEON_CYAN}'>cd [section]</span> (ex: cd projets).`);
+            // Mise à jour de la liste des commandes pour inclure toutes les navigations
+            history.push(`Commandes disponibles : <span style='color:${NEON_CYAN}'>whoami</span>, <span style='color:${NEON_CYAN}'>ls</span>, <span style='color:${NEON_CYAN}'>cat [fichier]</span>, <span style='color:${NEON_CYAN}'>ping google.com </span>, <span style='color:${NEON_CYAN}'>whois chaima</span>, <span style='color:${NEON_CYAN}'>clear</span>, <span style='color:${NEON_CYAN}'>java -version</span>.`);
+            history.push(`Pour naviguer, utilisez <span style='color:${NEON_CYAN}'>cd [section]</span> (ex: cd projets, cd competences, cd certifications).`);
             return history;
         },
 
@@ -35,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             history.push('Fichiers/Répertoires :');
             history.push(`  <span style='color:${NEON_CYAN}'>projets/</span> (Travaux clés)`);
             history.push(`  <span style='color:${NEON_CYAN}'>competences/</span> (Skills techniques)`);
+            history.push(`  <span style='color:${NEON_CYAN}'>certifications/</span> (Certifications Cisco/ANSSI)`);
             history.push("  about.txt (Présentation)");
             history.push("  cv.pdf (Curriculum Vitae)");
             return history;
@@ -45,14 +47,32 @@ document.addEventListener('DOMContentLoaded', () => {
             return history;
         },
         
+        // CORRIGÉ : Gère le PDF en ouvrant un nouvel onglet
+        'cat cv.pdf': (history) => {
+            history.push("Fichier binaire détecté (PDF). Tentative d'ouverture dans un nouvel onglet...");
+            // Assurez-vous que le fichier est bien à 'assets/cv.pdf'
+            window.open('assets/cv.pdf', '_blank'); 
+            history.push(`<span style='color:${NEON_CYAN}'>[INFO]</span> Le fichier cv.pdf a été ouvert. Vérifiez votre nouvel onglet.`);
+            return history;
+        },
+
+        // CORRIGÉ : Commande ping pour la crédibilité
         'ping google.com': (history) => {
-            history.push('PING google.com (142.250.187.163) 56(84) bytes of data.');
-            history.push('64 bytes from 142.250.187.163: icmp_seq=1 ttl=117 time=15.2 ms');
-            history.push('64 bytes from 142.250.187.163: icmp_seq=2 ttl=117 time=14.9 ms');
+            history.push('PING google.com (8.8.8.8) 56(84) bytes of data.');
+            history.push('64 bytes from 8.8.8.8: icmp_seq=1 ttl=117 time=15.2 ms');
+            history.push('64 bytes from 8.8.8.8: icmp_seq=2 ttl=117 time=14.9 ms');
             history.push('--- google.com ping statistics ---');
             history.push('2 packets transmitted, 2 received, 0% packet loss');
             return history;
         },
+        
+        // AJOUTÉ : Commande pour Java
+        'java -version': (history) => {
+            history.push('java version "17.0.8" 2023-08-01 LTS');
+            history.push('Java(TM) SE Runtime Environment');
+            return history;
+        },
+
 
         'cd projets': (history) => {
             history.push("Accès au répertoire projets...");
@@ -65,6 +85,13 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('competences').scrollIntoView({ behavior: 'smooth' });
             return history;
         },
+
+        // AJOUTÉ : Commande de navigation vers les certifications
+        'cd certifications': (history) => {
+            history.push("Accès au répertoire certifications...");
+            document.getElementById('certifications').scrollIntoView({ behavior: 'smooth' });
+            return history;
+        },
         
         'clear': (history) => {
             output.innerHTML = '';
@@ -73,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
             history.push(`chaima@ciel-terminal:$ <span style='color:${NEON_PURPLE}'>Terminal vidé. Tapez 'help' pour la liste des commandes.</span>`);
             return history;
         }
-    };
+    }; // FIN de l'objet commands
 
     /**
      * Traite la commande entrée par l'utilisateur
@@ -106,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function appendOutput(lines) {
         lines.forEach(line => {
             const newOutput = document.createElement('div');
-            // Remplacer les doubles astérisques (**) par <strong> pour le gras
+            // Gère le remplacement des astérisques (**) par <strong> pour le gras
             newOutput.innerHTML = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); 
             output.appendChild(newOutput);
         });
@@ -141,20 +168,3 @@ document.addEventListener('DOMContentLoaded', () => {
         appendOutput(historyLines);
     }
 });
-
-
-
-// Ajoutez cette nouvelle commande dans l'objet 'commands' de votre script.js
-
-'cd certifications': (history) => {
-    history.push("Accès au répertoire certifications...");
-    document.getElementById('certifications').scrollIntoView({ behavior: 'smooth' });
-    return history;
-},
-
-// Pensez aussi à mettre à jour la commande 'help' pour la lister :
-'help': (history) => {
-    history.push(`Commandes disponibles : <span style='color:${NEON_CYAN}'>whoami</span>, <span style='color:${NEON_CYAN}'>ls</span>, <span style='color:${NEON_CYAN}'>cat [fichier]</span>, <span style='color:${NEON_CYAN}'>ping [hôte]</span>, <span style='color:${NEON_CYAN}'>whois chaima</span>, <span style='color:${NEON_CYAN}'>docker ps</span>, <span style='color:${NEON_CYAN}'>clear</span>.`);
-    history.push(`Pour naviguer, utilisez <span style='color:${NEON_CYAN}'>cd [section]</span> (ex: cd projets, <span style='color:${NEON_CYAN}'>cd certifications</span>).`); // MIS A JOUR
-    return history;
-},

@@ -304,14 +304,37 @@ a:hover {
 }
 
 
+/* Style de la carte de compétence (la base) */
+.skill-category {
+    background-color: #1a1a1a; 
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 255, 255, 0.2); 
+    /* Assurez-vous que la transition est définie ici pour que l'animation soit fluide */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* L'effet d'animation au survol pour les competences */
+.skill-category:hover {
+    /* Léger zoom de 2% pour attirer l'attention */
+    transform: scale(1.02); 
+    
+    /* Renforce l'ombre néon pour donner l'impression que la carte s'allume */
+    box-shadow: 
+        0 0 10px var(--neon-cyan), 
+        0 0 20px rgba(0, 255, 255, 0.5), /* Effet de glow cyan */
+        0 0 5px var(--neon-purple); /* Subtil glow purple en soutien */
+}
+
 /* Projets Grid */
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
     margin-top: 20px;
+    
 }
-
+ 
 .project {
     background-color: var(--color-terminal-bg);
     padding: 20px;
@@ -332,6 +355,26 @@ a:hover {
     object-fit: cover;
     border-radius: 4px;
     margin-bottom: 15px;
+}
+/* --- La Carte de Projet Individuelle --- */
+.project {
+  background-color: #222;
+  padding: 20px;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+
+  /* 1. Rendre la carte Flexbox vertical */
+  display: flex; 
+  flex-direction: column; 
+  /* 2. Forcer la carte à prendre toute la hauteur que lui donne la grille (align-items: stretch) */
+  height: 100%; 
+}
+
+/* --- Le Conteneur des Liens (Boutons Verts) --- */
+.project-links {
+    /* Propriété magique : pousse ce bloc au maximum vers le bas */
+    margin-top: auto; 
+    padding-top: 15px; 
 }
 
 .neon-link {
