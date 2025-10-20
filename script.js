@@ -3,15 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const output = document.getElementById('output');
     const buttons = document.querySelectorAll('.cmd-btn');
 
-    // Définir les couleurs néon pour les utiliser dans les réponses
+    // Définition des couleurs néon
     const NEON_PURPLE = '#b26eff';
     const NEON_CYAN = '#00ffff';
     
-    // --- Définition des Commandes Complexes ---
+    // --- Définition des Commandes ---
     const commands = {
         'help': (history) => {
-            // Mise à jour de la liste des commandes pour inclure toutes les navigations
-            history.push(`Commandes disponibles : <span style='color:${NEON_CYAN}'>whoami</span>, <span style='color:${NEON_CYAN}'>ls</span>, <span style='color:${NEON_CYAN}'>cat [fichier]</span>, <span style='color:${NEON_CYAN}'>ping google.com </span>, <span style='color:${NEON_CYAN}'>whois chaima</span>, <span style='color:${NEON_CYAN}'>clear</span>, <span style='color:${NEON_CYAN}'>java -version</span>.`);
+            history.push(`Commandes disponibles : <span style='color:${NEON_CYAN}'>whoami</span>, <span style='color:${NEON_CYAN}'>ls</span>, <span style='color:${NEON_CYAN}'>cat [fichier]</span>, <span style='color:${NEON_CYAN}'>ping google.com </span>, <span style='color:${NEON_CYAN}'>whois chaima</span>, <span style='color:${NEON_CYAN}'>java -version</span>.`);
             history.push(`Pour naviguer, utilisez <span style='color:${NEON_CYAN}'>cd [section]</span> (ex: cd projets, cd competences, cd certifications).`);
             return history;
         },
@@ -34,11 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         'ls': (history) => {
             history.push('Fichiers/Répertoires :');
-            history.push(`  <span style='color:${NEON_CYAN}'>projets/</span> (Travaux clés)`);
-            history.push(`  <span style='color:${NEON_CYAN}'>competences/</span> (Skills techniques)`);
-            history.push(`  <span style='color:${NEON_CYAN}'>certifications/</span> (Certifications Cisco/ANSSI)`);
-            history.push("  about.txt (Présentation)");
-            history.push("  cv.pdf (Curriculum Vitae)");
+            history.push(`  <span style='color:${NEON_CYAN}'>projets/</span> (Travaux clés)`);
+            history.push(`  <span style='color:${NEON_CYAN}'>competences/</span> (Skills techniques)`);
+            history.push(`  <span style='color:${NEON_CYAN}'>certifications/</span> (Certifications Cisco/ANSSI)`);
+            history.push("  about.txt (Présentation)");
+            history.push("  cv.pdf (Curriculum Vitae)");
             return history;
         },
 
@@ -47,16 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return history;
         },
         
-        // CORRIGÉ : Gère le PDF en ouvrant un nouvel onglet
         'cat cv.pdf': (history) => {
             history.push("Fichier binaire détecté (PDF). Tentative d'ouverture dans un nouvel onglet...");
-            // Assurez-vous que le fichier est bien à 'assets/cv.pdf'
             window.open('assets/cv.pdf', '_blank'); 
             history.push(`<span style='color:${NEON_CYAN}'>[INFO]</span> Le fichier cv.pdf a été ouvert. Vérifiez votre nouvel onglet.`);
             return history;
         },
 
-        // CORRIGÉ : Commande ping pour la crédibilité
         'ping google.com': (history) => {
             history.push('PING google.com (8.8.8.8) 56(84) bytes of data.');
             history.push('64 bytes from 8.8.8.8: icmp_seq=1 ttl=117 time=15.2 ms');
@@ -66,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return history;
         },
         
-        // AJOUTÉ : Commande pour Java
         'java -version': (history) => {
             history.push('java version "17.0.8" 2023-08-01 LTS');
             history.push('Java(TM) SE Runtime Environment');
@@ -86,19 +81,16 @@ document.addEventListener('DOMContentLoaded', () => {
             return history;
         },
 
-        // AJOUTÉ : Commande de navigation vers les certifications
         'cd certifications': (history) => {
             history.push("Accès au répertoire certifications...");
             document.getElementById('certifications').scrollIntoView({ behavior: 'smooth' });
             return history;
         },
         
+        // CORRECTION DE CLEAR : La fonction clear ne fait rien d'autre que retourner un tableau vide.
+        // La logique de nettoyage et d'affichage est gérée par executeCommand.
         'clear': (history) => {
-            output.innerHTML = '';
-            // Retirer la commande 'clear' elle-même
-            history.pop(); 
-            history.push(`chaima@ciel-terminal:$ <span style='color:${NEON_PURPLE}'>Terminal vidé. Tapez 'help' pour la liste des commandes.</span>`);
-            return history;
+            return [];
         }
     }; // FIN de l'objet commands
 
@@ -114,6 +106,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 2. Traiter la commande
         if (commands[cmd]) {
+            // Pour 'clear', on ne fait rien car c'est géré par executeCommand
+            if (cmd === 'clear') {
+                return []; 
+            }
+            
             if (typeof commands[cmd] === 'function') {
                 history = commands[cmd](history); 
             } else {
@@ -147,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
     input.addEventListener("keydown", function (e) {
         if (e.key === "Enter") {
             const cmd = input.value.trim();
-            if (cmd) { // S'assurer que l'input n'est pas vide
+            if (cmd) { 
                 executeCommand(cmd);
                 input.value = ""; // Vider l'input après exécution
             }
@@ -164,7 +161,23 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Fonction wrapper pour exécuter et nettoyer
     function executeCommand(cmd) {
-        const historyLines = processCommand(cmd);
-        appendOutput(historyLines);
+        const cmdTrimmed = cmd.toLowerCase().trim();
+
+        // Gestion spéciale du 'clear'
+        if (cmdTrimmed === 'clear') {
+            output.innerHTML = ''; // Vide l'écran avant d'ajouter le message
+            const clearLines = [
+                `chaima@ciel-terminal:$ ${cmd}`, // Affiche la commande 'clear'
+                `chaima@ciel-terminal:$ <span style='color:${NEON_PURPLE}'>Terminal vidé. Tapez 'help' pour la liste des commandes.</span>`
+            ];
+            appendOutput(clearLines);
+        } else {
+            // Gestion des commandes normales
+            const historyLines = processCommand(cmd);
+            appendOutput(historyLines);
+        }
+
+        // CORRECTION CLÉ : Ramener le focus à l'input après chaque commande
+        input.focus(); 
     }
 });
